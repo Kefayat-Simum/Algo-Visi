@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorting Visualizer - DSA Playground</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/visualizer.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-icon">&lt;/&gt;</span>
+      <span class="logo-text">DSA Playground</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Dashboard</a></li>
+      <li><a href="sorting.html" class="active">Sorting</a></li>
+      <li><a href="tree.html">Trees</a></li>
+      <li><a href="graph.html">Graphs</a></li>
+    </ul>
+  </nav>
+
+  <div class="visualizer-container">
+    <h2>Sorting Algorithm Visualizer</h2>
+
+    <!-- Controls Panel -->
+    <div class="control-panel">
+      <div class="input-group">
+        <button id="generate-btn" class="btn btn-secondary">Generate New Array</button>
+        <label for="speed-slider" style="font-size: 0.85rem; color: var(--text-muted);">Speed:</label>
+        <input type="range" id="speed-slider" min="10" max="1000" value="500">
+      </div>
+
+      <div class="input-group">
+        <button id="play-btn" class="btn">Start Sorting</button>
+        <button id="pause-btn" class="btn btn-secondary">Pause</button>
+      </div>
+    </div>
+
+    <!-- Visualizer Canvas -->
+    <div id="array-container" class="canvas-area"></div>
+
+    <!-- Big-O Metrics Panel -->
+    <div class="complexity-panel">
+      <div class="complexity-card">
+        <span>Algorithm</span>
+        <strong id="algo-name">Bubble Sort</strong>
+      </div>
+      <div class="complexity-card">
+        <span>Best Time</span>
+        <strong id="time-best">O(n)</strong>
+      </div>
+      <div class="complexity-card">
+        <span>Worst Time</span>
+        <strong id="time-worst">O(n²)</strong>
+      </div>
+      <div class="complexity-card">
+        <span>Space Complexity</span>
+        <strong id="space-comp">O(1)</strong>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/visualization/arrayVisualizer.js"></script>
+</body>
+</html>

@@ -29,6 +29,15 @@
     <!-- Controls Panel -->
     <div class="control-panel">
       <div class="input-group">
+
+        <select id="algo-select" class="btn btn-secondary">
+          <option value="bubbleSort">Bubble Sort</option>
+          <option value="selectionSort">Selection Sort</option>
+          <option value="insertionSort">Insertion Sort</option>
+          <option value="mergeSort">Merge Sort</option>
+          <option value="quickSort">Quick Sort</option>
+        </select>
+        
         <button id="generate-btn" class="btn btn-secondary">Generate New Array</button>
         <label for="speed-slider" style="font-size: 0.85rem; color: var(--text-muted);">Speed:</label>
         <input type="range" id="speed-slider" min="10" max="1000" value="500">

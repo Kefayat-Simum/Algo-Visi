@@ -1,5 +1,10 @@
 import { generateRandomArray } from '../utils/helpers.js';
+import { COMPLEXITY_DATA } from '../utils/complexity.js';
 import { generateBubbleSortSteps } from '../algorithms/bubbleSort.js';
+import { generateSelectionSortSteps } from '../algorithms/selectionSort.js';
+import { generateInsertionSortSteps } from '../algorithms/insertionSort.js';
+import { generateMergeSortSteps } from '../algorithms/mergeSort.js';
+import { generateQuickSortSteps } from '../algorithms/quickSort.js';
 import { AnimationController } from './animationController.js';
 
 const arrayContainer = document.getElementById('array-container');
@@ -7,11 +12,26 @@ const generateBtn = document.getElementById('generate-btn');
 const playBtn = document.getElementById('play-btn');
 const pauseBtn = document.getElementById('pause-btn');
 const speedSlider = document.getElementById('speed-slider');
+const algoSelect = document.getElementById('algo-select');
+
+const algoName = document.getElementById('algo-name');
+const timeBest = document.getElementById('time-best');
+const timeWorst = document.getElementById('time-worst');
+const spaceComp = document.getElementById('space-comp');
 
 const controller = new AnimationController();
 let currentArray = [];
 
-// Render array bars to DOM
+function updateComplexityPanel(selectedAlgo) {
+  const data = COMPLEXITY_DATA[selectedAlgo];
+  if (data) {
+    algoName.textContent = data.name;
+    timeBest.textContent = data.timeBest;
+    timeWorst.textContent = data.timeWorst;
+    spaceComp.textContent = data.space;
+  }
+}
+
 function renderArrayState(step) {
   const { array, comparing, swapping, sorted } = step;
   arrayContainer.innerHTML = '';
@@ -30,7 +50,6 @@ function renderArrayState(step) {
   });
 }
 
-// Generate new random data set
 function resetArray() {
   controller.reset();
   currentArray = generateRandomArray(12, 15, 90);
@@ -42,24 +61,34 @@ function resetArray() {
   });
 }
 
-// Event Listeners
+function getStepsForSelectedAlgorithm(selectedAlgo, arr) {
+  switch (selectedAlgo) {
+    case 'bubbleSort': return generateBubbleSortSteps(arr);
+    case 'selectionSort': return generateSelectionSortSteps(arr);
+    case 'insertionSort': return generateInsertionSortSteps(arr);
+    case 'mergeSort': return generateMergeSortSteps(arr);
+    case 'quickSort': return generateQuickSortSteps(arr);
+    default: return generateBubbleSortSteps(arr);
+  }
+}
+
 generateBtn.addEventListener('click', resetArray);
+
+algoSelect.addEventListener('change', (e) => {
+  updateComplexityPanel(e.target.value);
+  resetArray();
+});
 
 playBtn.addEventListener('click', () => {
   if (!controller.isPlaying && controller.steps.length === 0) {
-    const steps = generateBubbleSortSteps(currentArray);
+    const steps = getStepsForSelectedAlgorithm(algoSelect.value, currentArray);
     controller.setSteps(steps);
   }
   controller.play(renderArrayState);
 });
 
-pauseBtn.addEventListener('click', () => {
-  controller.pause();
-});
+pauseBtn.addEventListener('click', () => { controller.pause(); });
+speedSlider.addEventListener('input', (e) => { controller.setSpeed(Number(e.target.value)); });
 
-speedSlider.addEventListener('input', (e) => {
-  controller.setSpeed(Number(e.target.value));
-});
-
-// Initial Setup
 resetArray();
+updateComplexityPanel('bubbleSort');

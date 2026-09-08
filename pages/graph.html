@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph Visualizer - DSA Playground</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/visualizer.css">
+  <style>
+    #graph-svg {
+      width: 100%;
+      height: 400px;
+    }
+    .graph-node {
+      fill: var(--accent);
+      stroke: var(--border-color);
+      stroke-width: 2px;
+      transition: fill 0.3s ease;
+    }
+    .graph-node.visited {
+      fill: #10b981; /* Green for visited nodes */
+    }
+    .graph-text {
+      fill: #000;
+      font-weight: bold;
+      font-size: 14px;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .graph-edge {
+      stroke: var(--text-muted);
+      stroke-width: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-icon">&lt;/&gt;</span>
+      <span class="logo-text">DSA Playground</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Dashboard</a></li>
+      <li><a href="linear-structures.html">Linear Structures</a></li>
+      <li><a href="sorting.html">Sorting</a></li>
+      <li><a href="searching.html">Searching</a></li>
+      <li><a href="tree.html">Trees</a></li>
+      <li><a href="graph.html" class="active">Graphs</a></li>
+    </ul>
+  </nav>
+
+  <div class="visualizer-container">
+    <h2>Graph Traversal Visualizer (BFS & DFS)</h2>
+
+    <!-- Controls Panel -->
+    <div class="control-panel">
+      <div class="input-group">
+        <select id="algo-select" class="btn btn-secondary">
+          <option value="bfs">Breadth-First Search (BFS)</option>
+          <option value="dfs">Depth-First Search (DFS)</option>
+        </select>
+        <button id="reset-graph-btn" class="btn btn-secondary">Reset Sample Graph</button>
+      </div>
+
+      <div class="input-group">
+        <button id="play-btn" class="btn">Start Traversal</button>
+        <button id="pause-btn" class="btn btn-secondary">Pause</button>
+      </div>
+    </div>
+
+    <!-- Visualizer Canvas -->
+    <div id="canvas-container" class="canvas-area">
+      <svg id="graph-svg"></svg>
+    </div>
+
+    <!-- Metrics Panel -->
+    <div class="complexity-panel">
+      <div class="complexity-card" style="grid-column: 1 / -1; text-align: left;">
+        <span>Traversal Path:</span>
+        <strong id="path-output" style="font-size: 1.1rem; color: var(--accent);">None</strong>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/visualization/graphVisualizer.js"></script>
+</body>
+</html>

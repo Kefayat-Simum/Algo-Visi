@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Search Tree Visualizer - DSA Playground</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/visualizer.css">
+  <style>
+    /* SVG Tree Canvas Styling */
+    #tree-svg {
+      width: 100%;
+      height: 400px;
+    }
+    .tree-node {
+      fill: var(--accent);
+      stroke: var(--border-color);
+      stroke-width: 2px;
+      transition: all 0.3s ease;
+    }
+    .tree-text {
+      fill: #000;
+      font-weight: bold;
+      font-size: 14px;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .tree-line {
+      stroke: var(--text-muted);
+      stroke-width: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-icon">&lt;/&gt;</span>
+      <span class="logo-text">DSA Playground</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Dashboard</a></li>
+      <li><a href="linear-structures.html">Linear Structures</a></li>
+      <li><a href="sorting.html">Sorting</a></li>
+      <li><a href="searching.html">Searching</a></li>
+      <li><a href="tree.html" class="active">Trees</a></li>
+    </ul>
+  </nav>
+
+  <div class="visualizer-container">
+    <h2>Binary Search Tree (BST) Visualizer</h2>
+
+    <!-- Controls Panel -->
+    <div class="control-panel">
+      <div class="input-group">
+        <input type="text" id="node-input" placeholder="Node Value" style="width: 120px;">
+        <button id="insert-btn" class="btn">Insert</button>
+        <button id="clear-btn" class="btn btn-secondary">Clear Tree</button>
+      </div>
+
+      <div class="input-group">
+        <button id="inorder-btn" class="btn btn-secondary">In-Order Traversal</button>
+      </div>
+    </div>
+
+    <!-- Visualizer Canvas -->
+    <div id="canvas-container" class="canvas-area">
+      <svg id="tree-svg"></svg>
+    </div>
+
+    <!-- Traversal Output -->
+    <div class="complexity-panel">
+      <div class="complexity-card" style="grid-column: 1 / -1; text-align: left;">
+        <span>Traversal Result:</span>
+        <strong id="traversal-output" style="font-size: 1.1rem; color: var(--accent);">None</strong>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/visualization/treeVisualizer.js"></script>
+</body>
+</html>

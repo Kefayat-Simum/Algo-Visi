@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Structures - DSA Playground</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/visualizer.css">
+  <style>
+    /* Specific styles for Stack & Queue containers */
+    .stack-display {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 6px;
+      width: 140px;
+      min-height: 280px;
+      border: 3px solid var(--accent);
+      border-top: none;
+      padding: 10px;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .queue-display {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      min-width: 300px;
+      height: 80px;
+      border: 3px solid var(--accent);
+      border-left: none;
+      border-right: none;
+      padding: 10px;
+    }
+
+    .struct-node {
+      background: var(--accent);
+      color: #000;
+      font-weight: bold;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 40px;
+      transition: all 0.3s ease;
+    }
+
+    .queue-display .struct-node {
+      width: 50px;
+      height: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-icon">&lt;/&gt;</span>
+      <span class="logo-text">DSA Playground</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Dashboard</a></li>
+      <li><a href="linear-structures.html" class="active">Linear Structures</a></li>
+      <li><a href="sorting.html">Sorting</a></li>
+      <li><a href="searching.html">Searching</a></li>
+    </ul>
+  </nav>
+
+  <div class="visualizer-container">
+    <h2>Stack & Queue Visualizer</h2>
+
+    <!-- Controls Panel -->
+    <div class="control-panel">
+      <div class="input-group">
+        <select id="struct-select" class="btn btn-secondary">
+          <option value="stack">Stack (LIFO)</option>
+          <option value="queue">Queue (FIFO)</option>
+        </select>
+        <input type="text" id="node-input" placeholder="Enter Value" style="width: 120px;">
+      </div>
+
+      <div class="input-group">
+        <button id="push-btn" class="btn">PUSH / Enqueue</button>
+        <button id="pop-btn" class="btn btn-secondary">POP / Dequeue</button>
+        <button id="clear-btn" class="btn btn-secondary">Clear</button>
+      </div>
+    </div>
+
+    <!-- Visualizer Canvas -->
+    <div id="canvas-container" class="canvas-area" style="align-items: center;">
+      <div id="display-area" class="stack-display"></div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/visualization/linearVisualizer.js"></script>
+</body>
+</html>

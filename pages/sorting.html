@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sorting Visualizer - DSA Playground</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('dsa-theme');
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+    })();
+  </script>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/visualizer.css">
 </head>
@@ -11,34 +20,58 @@
 
   <!-- Navigation Bar -->
   <nav class="navbar">
-    <div class="logo">
-      <span class="logo-icon">&lt;/&gt;</span>
+    <a class="logo" href="../index.html">
+      <img src="../favicon.svg" alt="DSA Playground" class="logo-favicon">
       <span class="logo-text">DSA Playground</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="../index.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg></span> Dashboard</a></li>
+        <li><a href="linear-structures.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="4" rx="1"/><rect x="4" y="10.5" width="16" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/></svg></span> Linear</a></li>
+        <li><a href="sorting.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="6" y1="21" x2="6" y2="12"/><line x1="12" y1="21" x2="12" y2="4"/><line x1="18" y1="21" x2="18" y2="9"/></svg></span> Sorting</a></li>
+        <li><a href="searching.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg></span> Searching</a></li>
+        <li><a href="tree.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M12 7.5 6.9 16.7M12 7.5l5.1 9.2"/></svg></span> Trees</a></li>
+        <li><a href="graph.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 8.2l3.6 7.6M15.8 8.2l-3.6 7.6M8.5 7h7"/></svg></span> Graphs</a></li>
+      </ul>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
     </div>
-    <ul class="nav-links">
-      <li><a href="../index.html">Dashboard</a></li>
-      <li><a href="sorting.html" class="active">Sorting</a></li>
-      <li><a href="tree.html">Trees</a></li>
-      <li><a href="graph.html">Graphs</a></li>
-    </ul>
   </nav>
 
   <div class="visualizer-container">
-    <h2>Sorting Algorithm Visualizer</h2>
+    <!-- Header Section matching reference design -->
+    <header class="visualizer-header">
+      <h1 id="algo-heading" class="visualizer-title">QUICK SORT</h1>
+      <div id="algo-subheading" class="visualizer-subtitle">LOMUTO PARTITION</div>
+    </header>
+
+    <!-- Real-time Stat Badges -->
+    <div class="stats-bar">
+      <div class="stat-pill compare">
+        <span class="stat-label">COMPARISONS</span>
+        <span id="compare-count" class="stat-value">0</span>
+      </div>
+      <div class="stat-pill swaps">
+        <span class="stat-label">SWAPS</span>
+        <span id="swap-count" class="stat-value">0</span>
+      </div>
+    </div>
 
     <!-- Controls Panel -->
     <div class="control-panel">
       <div class="input-group">
-
         <select id="algo-select" class="btn btn-secondary">
+          <option value="quickSort" selected>Quick Sort (Lomuto)</option>
           <option value="bubbleSort">Bubble Sort</option>
           <option value="selectionSort">Selection Sort</option>
           <option value="insertionSort">Insertion Sort</option>
           <option value="mergeSort">Merge Sort</option>
-          <option value="quickSort">Quick Sort</option>
         </select>
-        
+
         <button id="generate-btn" class="btn btn-secondary">Generate New Array</button>
+
         <label for="speed-slider" style="font-size: 0.85rem; color: var(--text-muted);">Speed:</label>
         <input type="range" id="speed-slider" min="10" max="1000" value="500">
       </div>
@@ -49,30 +82,52 @@
       </div>
     </div>
 
-    <!-- Visualizer Canvas -->
-    <div id="array-container" class="canvas-area"></div>
+    <!-- Technical Blueprint Canvas Area with Robotic Crane -->
+    <div id="canvas-area" class="canvas-area sorting-canvas">
+      <!-- Overhead Gantry Rail -->
+      <div class="gantry-rail"></div>
+
+      <!-- Robotic Crane Assembly -->
+      <div id="robotic-crane" class="robotic-crane">
+        <div class="crane-trolley">
+          <div class="crane-light"></div>
+        </div>
+        <div class="crane-shafts"></div>
+        <div class="crane-gripper"></div>
+      </div>
+
+      <!-- Array Cards Stage -->
+      <div id="array-stage" class="array-stage"></div>
+    </div>
+
+    <!-- Action Status Banner -->
+    <div class="action-banner">
+      <span id="status-text">Ready to start sorting</span>
+    </div>
 
     <!-- Big-O Metrics Panel -->
     <div class="complexity-panel">
       <div class="complexity-card">
         <span>Algorithm</span>
-        <strong id="algo-name">Bubble Sort</strong>
+        <strong id="algo-name">Quick Sort</strong>
       </div>
       <div class="complexity-card">
-        <span>Best Time</span>
-        <strong id="time-best">O(n)</strong>
+        <span>Best Case</span>
+        <strong id="time-best">O(n log n)</strong>
       </div>
       <div class="complexity-card">
-        <span>Worst Time</span>
+        <span>Worst Case</span>
         <strong id="time-worst">O(n²)</strong>
       </div>
       <div class="complexity-card">
         <span>Space Complexity</span>
-        <strong id="space-comp">O(1)</strong>
+        <strong id="space-comp">O(log n)</strong>
       </div>
     </div>
   </div>
 
-  <script type="module" src="../js/visualization/arrayVisualizer.js"></script>
+  <!-- Standard script to guarantee execution on local file:// protocol with zero CORS restrictions -->
+  <script src="../js/visualization/arrayVisualizer.js"></script>
+  <script src="../js/theme.js"></script>
 </body>
 </html>

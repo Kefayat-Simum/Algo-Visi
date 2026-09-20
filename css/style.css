@@ -1,13 +1,56 @@
+/* ==========================================================================
+   DSA Playground — Global Theme & Navigation
+   Two themes: deep-dark (default) and pure-white light.
+   Toggle by setting  <html data-theme="light">  (see js/theme.js).
+   ========================================================================== */
+
+/* ---------- DARK THEME (default) : "deep dark" ---------- */
 :root {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --accent: #38bdf8;
-  --accent-hover: #0284c7;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --card-bg: rgba(30, 41, 59, 0.7);
-  --border-color: #334155;
+  --bg-primary: #0a0a0b;        /* deep near-black page background */
+  --bg-secondary: #141416;      /* navbar / panels */
+  --card-bg: rgba(20, 20, 23, 0.72);
+  --chip-bg: #1c1c20;           /* small tags / pills */
+
+  --accent: #8dcc3a;            /* sky-blue brand accent */
+  --accent-hover: #13cf68;
+  --accent-contrast: #041016;   /* text placed on top of an accent fill */
+  --accent-soft: rgba(56, 189, 248, 0.12);
+
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --border-color: #2a2a30;
+
+  --hero-grad-a: #38f88e;
+  --hero-grad-b: #405558;
+
+  --shadow-color: rgba(0, 0, 0, 0.45);
   --radius: 12px;
+
+  color-scheme: dark;
+}
+
+/* ---------- LIGHT THEME : "pure white" ---------- */
+[data-theme="light"] {
+  --bg-primary: #ffffff;        /* pure white page background */
+  --bg-secondary: #ffffff;      /* navbar / panels stay white */
+  --card-bg: #ffffff;
+  --chip-bg: #f1f5f9;
+
+  --accent: #141316;            /* deeper blue for contrast on white */
+  --accent-hover: #141314;
+  --accent-contrast: #ffffff;   /* white text on the deeper accent */
+  --accent-soft: rgba(2, 132, 199, 0.10);
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e5e7eb;
+
+  --hero-grad-a: #161615;
+  --hero-grad-b: #1b1d1a;
+
+  --shadow-color: rgba(15, 23, 42, 0.08);
+
+  color-scheme: light;
 }
 
 * {
@@ -21,40 +64,142 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-main);
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Navbar */
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 5%;
+  gap: 1rem;
+  padding: 1.1rem 5%;
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  flex-wrap: wrap;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--accent);
+  text-decoration: none;
+}
+
+.logo-text {
+  white-space: nowrap;
+}
+
+/* Circular brand mark in the navbar */
+.logo-favicon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 8px var(--accent-soft);
+}
+
+/* Right cluster: nav links + theme toggle */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 1.5rem;
+  gap: 0.3rem;
+  flex-wrap: wrap;
 }
 
 .nav-links a {
   color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  border: 1px solid transparent;
 }
 
-.nav-links a:hover, .nav-links a.active {
+.nav-links a:hover {
   color: var(--accent);
+  background: var(--accent-soft);
 }
+
+.nav-links a.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* Inline SVG icons inherit the link colour */
+.nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.nav-icon svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+
+/* ==========================================================================
+   Theme toggle button (sun / moon)
+   ========================================================================== */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: rotate(-15deg);
+}
+
+.theme-toggle svg {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+
+/* theme.js toggles which glyph is visible */
+.icon-moon { display: none; }

@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DSA Visualizer & Interactive Playground</title>
+  <title>DSA Visualizer &amp; Interactive Playground</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Apply saved theme before paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('dsa-theme');
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
@@ -11,25 +21,33 @@
 
   <!-- Navigation Bar -->
   <nav class="navbar">
-    <div class="logo">
-      <span class="logo-icon">&lt;/&gt;</span>
+    <a class="logo" href="index.html">
+      <img src="favicon.svg" alt="DSA Playground" class="logo-favicon">
       <span class="logo-text">DSA Playground</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg></span> Dashboard</a></li>
+        <li><a href="pages/linear-structures.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="4" rx="1"/><rect x="4" y="10.5" width="16" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/></svg></span> Linear</a></li>
+        <li><a href="pages/sorting.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="6" y1="21" x2="6" y2="12"/><line x1="12" y1="21" x2="12" y2="4"/><line x1="18" y1="21" x2="18" y2="9"/></svg></span> Sorting</a></li>
+        <li><a href="pages/searching.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg></span> Searching</a></li>
+        <li><a href="pages/tree.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M12 7.5 6.9 16.7M12 7.5l5.1 9.2"/></svg></span> Trees</a></li>
+        <li><a href="pages/graph.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 8.2l3.6 7.6M15.8 8.2l-3.6 7.6M8.5 7h7"/></svg></span> Graphs</a></li>
+      </ul>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
     </div>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Dashboard</a></li>
-      <li><a href="pages/sorting.html">Sorting</a></li>
-      <li><a href="pages/tree.html">Trees</a></li>
-      <li><a href="pages/graph.html">Graphs</a></li>
-    </ul>
   </nav>
 
   <!-- Hero Section -->
   <header class="hero">
-    <h1>Algorithm Visualizer & Learning Hub</h1>
+    <h1>Algorithm Visualizer &amp; Learning Hub</h1>
     <p>Explore, execute, and master fundamental data structures and algorithms through step-by-step interactive animations.</p>
   </header>
 
-  <!-- Main Modules Grid -->
+  <!-- Main Modules — Flexbox layout -->
   <main class="dashboard-container">
     <h2 class="section-title">Syllabus Modules</h2>
     <div class="card-grid">
@@ -37,83 +55,70 @@
       <!-- Module 1: Linear Structures -->
       <a href="pages/linear-structures.html" class="module-card">
         <div class="card-badge">Module 01</div>
-        <div class="card-icon">⚡</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="4" rx="1"/><rect x="4" y="10.5" width="16" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/></svg></div>
         <h3>Linear Structures</h3>
-        <p>Explore Linear Arrays, Matrices, Stacks (PUSH/POP), Queues, and Linked List pointer manipulations.</p>
+        <p>Push and pop on a LIFO Stack, enqueue and dequeue on a FIFO Queue, and watch each operation animate step by step.</p>
         <div class="card-tags">
-          <span>Arrays</span>
-          <span>Stacks</span>
-          <span>Queues</span>
-          <span>Linked Lists</span>
+          <span>Stack (LIFO)</span>
+          <span>Queue (FIFO)</span>
         </div>
       </a>
 
-      <!-- Module 2: Sorting & Hashing -->
+      <!-- Module 2: Sorting -->
       <a href="pages/sorting.html" class="module-card">
         <div class="card-badge">Module 02</div>
-        <div class="card-icon">📊</div>
-        <h3>Sorting & Hashing</h3>
-        <p>Visualize Bubble, Insertion, Selection, Quick, and Merge Sort alongside Hash collision resolution strategies.</p>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="21" x2="6" y2="12"/><line x1="12" y1="21" x2="12" y2="4"/><line x1="18" y1="21" x2="18" y2="9"/></svg></div>
+        <h3>Sorting Algorithms</h3>
+        <p>Compare, swap and partition your way through five classic sorts with live comparison and swap counters.</p>
         <div class="card-tags">
-          <span>QuickSort</span>
-          <span>MergeSort</span>
-          <span>Hashing</span>
+          <span>Bubble</span>
+          <span>Insertion</span>
+          <span>Selection</span>
+          <span>Quick</span>
+          <span>Merge</span>
         </div>
       </a>
 
-      <!-- Module 3: Searching Algorithms -->
+      <!-- Module 3: Searching -->
       <a href="pages/searching.html" class="module-card">
         <div class="card-badge">Module 03</div>
-        <div class="card-icon">🔍</div>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg></div>
         <h3>Searching Algorithms</h3>
-        <p>Compare performance and execution boundaries between Linear Search, Binary Search, and Skip Lists.</p>
+        <p>Watch how Linear Search scans element by element while Binary Search halves the range on a sorted array.</p>
         <div class="card-tags">
+          <span>Linear Search</span>
           <span>Binary Search</span>
-          <span>Skip List</span>
         </div>
       </a>
 
-      <!-- Module 4: Trees & Heaps -->
+      <!-- Module 4: Trees -->
       <a href="pages/tree.html" class="module-card">
         <div class="card-badge">Module 04</div>
-        <div class="card-icon">🌳</div>
-        <h3>Trees & Heaps</h3>
-        <p>Dynamic node insertion, deletion, and traversals on Binary Search Trees, B-Trees, and Min/Max Heaps.</p>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M12 7.5 6.9 16.7M12 7.5l5.1 9.2"/></svg></div>
+        <h3>Trees</h3>
+        <p>Insert nodes into a Binary Search Tree and run an in-order traversal to see the sorted ordering emerge.</p>
         <div class="card-tags">
-          <span>BST</span>
-          <span>B-Trees</span>
-          <span>Heaps</span>
+          <span>BST Insertion</span>
+          <span>In-Order Traversal</span>
         </div>
       </a>
 
-      <!-- Module 5: Graph Algorithms -->
+      <!-- Module 5: Graphs -->
       <a href="pages/graph.html" class="module-card">
         <div class="card-badge">Module 05</div>
-        <div class="card-icon">🕸️</div>
-        <h3>Graph Algorithms</h3>
-        <p>Interactive graph canvas for BFS, DFS traversals, Dijkstra, Bellman-Ford, and Minimum Spanning Trees.</p>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 8.2l3.6 7.6M15.8 8.2l-3.6 7.6M8.5 7h7"/></svg></div>
+        <h3>Graph Traversal</h3>
+        <p>Step through Breadth-First and Depth-First Search on a sample graph and follow the visited order in real time.</p>
         <div class="card-tags">
-          <span>BFS/DFS</span>
-          <span>Dijkstra</span>
-          <span>MST</span>
-        </div>
-      </a>
-
-      <!-- Module 6: Backtracking -->
-      <a href="pages/backtracking.html" class="module-card">
-        <div class="card-badge">Module 06</div>
-        <div class="card-icon">🧩</div>
-        <h3>Backtracking</h3>
-        <p>Observe state-space tree traversal and trial-and-error execution for the N-Queens problem step-by-step.</p>
-        <div class="card-tags">
-          <span>N-Queens</span>
-          <span>Recursion</span>
+          <span>BFS</span>
+          <span>DFS</span>
         </div>
       </a>
 
     </div>
   </main>
 
-  <script type="module" src="js/app.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/theme.js"></script>
 </body>
 </html>

@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Binary Search Tree Visualizer - DSA Playground</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('dsa-theme');
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+    })();
+  </script>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/visualizer.css">
   <style>
@@ -35,17 +44,24 @@
 
   <!-- Navigation Bar -->
   <nav class="navbar">
-    <div class="logo">
-      <span class="logo-icon">&lt;/&gt;</span>
+    <a class="logo" href="../index.html">
+      <img src="../favicon.svg" alt="DSA Playground" class="logo-favicon">
       <span class="logo-text">DSA Playground</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="../index.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg></span> Dashboard</a></li>
+        <li><a href="linear-structures.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="4" rx="1"/><rect x="4" y="10.5" width="16" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/></svg></span> Linear</a></li>
+        <li><a href="sorting.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="6" y1="21" x2="6" y2="12"/><line x1="12" y1="21" x2="12" y2="4"/><line x1="18" y1="21" x2="18" y2="9"/></svg></span> Sorting</a></li>
+        <li><a href="searching.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg></span> Searching</a></li>
+        <li><a href="tree.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M12 7.5 6.9 16.7M12 7.5l5.1 9.2"/></svg></span> Trees</a></li>
+        <li><a href="graph.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 8.2l3.6 7.6M15.8 8.2l-3.6 7.6M8.5 7h7"/></svg></span> Graphs</a></li>
+      </ul>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
     </div>
-    <ul class="nav-links">
-      <li><a href="../index.html">Dashboard</a></li>
-      <li><a href="linear-structures.html">Linear Structures</a></li>
-      <li><a href="sorting.html">Sorting</a></li>
-      <li><a href="searching.html">Searching</a></li>
-      <li><a href="tree.html" class="active">Trees</a></li>
-    </ul>
   </nav>
 
   <div class="visualizer-container">
@@ -78,6 +94,7 @@
     </div>
   </div>
 
-  <script type="module" src="../js/visualization/treeVisualizer.js"></script>
+  <script src="../js/visualization/treeVisualizer.js"></script>
+  <script src="../js/theme.js"></script>
 </body>
 </html>

@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Dashboard (index.html) — Hero + Flexbox module grid
+   ========================================================================== */
+
 /* Hero Header */
 .hero {
   text-align: center;
@@ -9,7 +13,7 @@
 .hero h1 {
   font-size: 2.5rem;
   margin-bottom: 0.75rem;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  background: linear-gradient(90deg, var(--hero-grad-a), var(--hero-grad-b));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -34,15 +38,19 @@
   padding-left: 0.75rem;
 }
 
-/* Grid Layout */
+/* ---------- Flexbox Layout for the selected topics ---------- */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
+  align-items: stretch;
 }
 
-/* Module Cards */
+/* Module Cards — flex items that grow to fill each row */
 .module-card {
+  flex: 1 1 320px;          /* grow, shrink, ideal width 320px */
+  min-width: 300px;
+  max-width: 520px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
@@ -53,13 +61,13 @@
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(8px);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
 }
 
 .module-card:hover {
   transform: translateY(-5px);
   border-color: var(--accent);
-  box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 10px 25px -5px var(--accent-soft);
 }
 
 .card-badge {
@@ -70,14 +78,27 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--accent);
-  background: rgba(56, 189, 248, 0.1);
+  background: var(--accent-soft);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
 }
 
+/* Larger inline SVG icon at the top of each card */
 .card-icon {
-  font-size: 2rem;
   margin-bottom: 1rem;
+  color: var(--accent);
+  display: inline-flex;
+}
+
+.card-icon svg {
+  width: 34px;
+  height: 34px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
 }
 
 .module-card h3 {
@@ -88,7 +109,7 @@
 .module-card p {
   color: var(--text-muted);
   font-size: 0.9rem;
-  line-height: 1.4;
+  line-height: 1.5;
   margin-bottom: 1.5rem;
   flex-grow: 1;
 }
@@ -101,9 +122,15 @@
 
 .card-tags span {
   font-size: 0.75rem;
-  background-color: var(--bg-primary);
+  background-color: var(--chip-bg);
   color: var(--text-muted);
   padding: 0.2rem 0.6rem;
   border-radius: 12px;
   border: 1px solid var(--border-color);
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 2rem; }
+  .dashboard-container { padding: 1rem 1.25rem 3rem 1.25rem; }
+  .module-card { flex-basis: 100%; max-width: 100%; }
 }

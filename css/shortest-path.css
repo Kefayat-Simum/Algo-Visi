@@ -1,0 +1,294 @@
+/* ==========================================================================
+   Shortest Path page (Dijkstra & Bellman-Ford)
+   Builds on visualizer.css: reuses .canvas-area, .stat-pill,
+   .control-panel, .action-banner and .complexity-panel.
+   ========================================================================== */
+
+/* ---------- Layout: graph + narration on the left, data on the right ---------- */
+.sp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.sp-main,
+.sp-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .sp-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- Controls ---------- */
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.sp-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.sp-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.sp-step-label {
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-width: 96px;
+  text-align: center;
+}
+
+/* ---------- Warning banner (Dijkstra + negative weights) ---------- */
+.sp-warning {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-main);
+}
+
+.sp-warning[hidden] { display: none; }
+
+/* ---------- Canvas ---------- */
+.sp-canvas {
+  align-items: center;
+  min-height: 0;
+  padding: 0.75rem;
+}
+
+#sp-svg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 700 / 420;   /* keeps the canvas from collapsing inside the flex container */
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Edges */
+.sp-edge line {
+  stroke: #475569;
+  stroke-width: 2.2px;
+  stroke-linecap: round;
+  transition: stroke 0.2s ease, stroke-width 0.2s ease;
+}
+.sp-edge .arrow { fill: #475569; transition: fill 0.2s ease; }
+
+.sp-edge.tree line { stroke: #38bdf8; stroke-width: 2.8px; }
+.sp-edge.tree .arrow { fill: #38bdf8; }
+
+.sp-edge.check line { stroke: #f59e0b; stroke-width: 4px; }
+.sp-edge.check .arrow { fill: #f59e0b; }
+
+.sp-edge.relax line { stroke: #10b981; stroke-width: 4px; }
+.sp-edge.relax .arrow { fill: #10b981; }
+
+.sp-edge.path line {
+  stroke: #10b981;
+  stroke-width: 5px;
+  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.7));
+}
+.sp-edge.path .arrow { fill: #10b981; }
+
+.sp-edge.cycle line {
+  stroke: #ef4444;
+  stroke-width: 4.5px;
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.7));
+}
+.sp-edge.cycle .arrow { fill: #ef4444; }
+
+/* Weight labels (halo matches the blueprint background) */
+.sp-weight {
+  font: 700 13px 'Fira Code', Consolas, monospace;
+  fill: #e2e8f0;
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke;
+  stroke: #0b1324;
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+.sp-weight.neg { fill: #fca5a5; }
+
+/* Nodes */
+.sp-node .body {
+  fill: #10203a;
+  stroke: rgba(56, 189, 248, 0.75);
+  stroke-width: 2.5px;
+  transition: fill 0.25s ease, stroke 0.25s ease;
+}
+
+.sp-node.settled .body { fill: #0d2f2a; stroke: #10b981; }
+
+.sp-node.updated .body {
+  fill: #0c3a4a;
+  stroke: #67e8f9;
+  filter: drop-shadow(0 0 8px rgba(103, 232, 249, 0.75));
+}
+
+.sp-node.current .body {
+  fill: #3a2a0a;
+  stroke: #f59e0b;
+  filter: drop-shadow(0 0 9px rgba(245, 158, 11, 0.7));
+}
+
+.sp-node.onpath .body {
+  fill: #0d3a30;
+  stroke: #10b981;
+  stroke-width: 3.5px;
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.7));
+}
+
+.sp-node.cyclenode .body {
+  fill: #3b1216;
+  stroke: #ef4444;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.7));
+}
+
+.sp-id {
+  fill: #e0f2fe;
+  font: 800 15px 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.sp-dist {
+  fill: #fbbf24;
+  font: 700 12px 'Fira Code', Consolas, monospace;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.sp-tag {
+  fill: #94a3b8;
+  font: 700 10px 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: 1.5px;
+  text-anchor: middle;
+}
+
+.sp-ring {
+  fill: none;
+  stroke-width: 2px;
+  stroke-dasharray: 4 4;
+}
+.sp-ring.source { stroke: #38bdf8; }
+.sp-ring.target { stroke: #c084fc; }
+
+/* ---------- Legend ---------- */
+.sp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.sp-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sp-legend i {
+  display: inline-block;
+  width: 16px;
+  height: 4px;
+  border-radius: 2px;
+}
+.sp-legend i.dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid; background: transparent; }
+
+/* ---------- Status banner ---------- */
+.sp-status {
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  min-height: 5.6rem;        /* room for 3-4 lines so the layout doesn't jump between steps */
+  display: flex;
+  align-items: center;
+  line-height: 1.55;
+}
+
+.sp-status.good { border-color: #10b981; }
+.sp-status.bad { border-color: #ef4444; }
+.sp-status.bad strong { color: #ef4444; }
+
+/* ---------- Side cards ---------- */
+.sp-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.sp-card h3 {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.sp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 0.88rem;
+}
+
+.sp-table th {
+  text-align: left;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sp-table td {
+  padding: 0.32rem 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sp-table tr:last-child td { border-bottom: none; }
+.sp-table .c-node { font-weight: 800; }
+.sp-table .c-dist { color: #f59e0b; font-weight: 700; }
+.sp-table .c-state { color: var(--text-muted); font-size: 0.78rem; }
+.sp-table tr.current td { background: rgba(245, 158, 11, 0.15); }
+.sp-table tr.updated td { background: rgba(16, 185, 129, 0.14); }
+.sp-table tr.updated .c-dist { color: #10b981; }
+
+/* Result cards (reuse .complexity-panel look) */
+.sp-result-path {
+  grid-column: span 2;
+  text-align: left;
+}
+
+.sp-result-path strong,
+.sp-result-cost strong {
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 640px) {
+  .sp-result-path { grid-column: 1 / -1; }
+  .stats-bar { flex-wrap: wrap; }
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shortest Path Visualizer - Algo Visi</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('dsa-theme');
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/visualizer.css">
+  <link rel="stylesheet" href="../css/shortest-path.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a class="logo" href="../index.html">
+      <img src="../favicon.svg" alt="Algo Visi" class="logo-favicon">
+      <span class="logo-text">Algo Visi</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="../index.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg></span> Dashboard</a></li>
+        <li><a href="linear-structures.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="4" rx="1"/><rect x="4" y="10.5" width="16" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/></svg></span> Linear</a></li>
+        <li><a href="sorting.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="6" y1="21" x2="6" y2="12"/><line x1="12" y1="21" x2="12" y2="4"/><line x1="18" y1="21" x2="18" y2="9"/></svg></span> Sorting</a></li>
+        <li><a href="searching.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg></span> Searching</a></li>
+        <li><a href="tree.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M12 7.5 6.9 16.7M12 7.5l5.1 9.2"/></svg></span> Trees</a></li>
+        <li><a href="graph.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 8.2l3.6 7.6M15.8 8.2l-3.6 7.6M8.5 7h7"/></svg></span> Graphs</a></li>
+        <li><a href="shortest-path.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="4" r="2.5"/><path d="M8 18h6.5a3.5 3.5 0 0 0 0-7h-5a3.5 3.5 0 0 1 0-7H16"/></svg></span> Shortest Path</a></li>
+      </ul>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="visualizer-container">
+    <header class="visualizer-header">
+      <h1 id="algo-heading" class="visualizer-title">DIJKSTRA</h1>
+      <div id="algo-subheading" class="visualizer-subtitle">GREEDY · PRIORITY QUEUE</div>
+    </header>
+
+    <!-- Real-time Stat Badges -->
+    <div class="stats-bar">
+      <div class="stat-pill compare">
+        <span class="stat-label">EDGE CHECKS</span>
+        <span id="check-count" class="stat-value">0</span>
+      </div>
+      <div class="stat-pill swaps">
+        <span class="stat-label">RELAXATIONS</span>
+        <span id="relax-count" class="stat-value">0</span>
+      </div>
+    </div>
+
+    <!-- Controls Panel -->
+    <div class="control-panel">
+      <div class="input-group">
+        <select id="algo-select" class="btn btn-secondary" aria-label="Algorithm">
+          <option value="dijkstra" selected>Dijkstra</option>
+          <option value="bellmanFord">Bellman-Ford</option>
+        </select>
+
+        <select id="preset-select" class="btn btn-secondary" aria-label="Sample graph">
+          <option value="road" selected>Road network (positive weights)</option>
+          <option value="negative">Negative edge (Dijkstra fails)</option>
+          <option value="cycle">Negative cycle (Bellman-Ford detects)</option>
+          <option value="random">Random graph</option>
+        </select>
+
+        <button id="random-btn" class="btn btn-secondary" type="button">New Random Graph</button>
+        <label class="sp-check" for="neg-toggle">
+          <input type="checkbox" id="neg-toggle"> Allow negative weights
+        </label>
+      </div>
+
+      <div class="input-group">
+        <label class="sp-label" for="source-select">From:</label>
+        <select id="source-select" class="btn btn-secondary"></select>
+        <label class="sp-label" for="target-select">To:</label>
+        <select id="target-select" class="btn btn-secondary"></select>
+
+        <label class="sp-label" for="speed-slider">Speed:</label>
+        <input type="range" id="speed-slider" min="10" max="1000" value="500">
+      </div>
+
+      <div class="input-group">
+        <button id="prev-btn" class="btn btn-secondary" type="button">&#9664; Step</button>
+        <span id="step-label" class="sp-step-label">Ready</span>
+        <button id="next-btn" class="btn btn-secondary" type="button">Step &#9654;</button>
+        <button id="play-btn" class="btn" type="button">Start</button>
+        <button id="pause-btn" class="btn btn-secondary" type="button">Pause</button>
+        <button id="reset-btn" class="btn btn-secondary" type="button">Reset</button>
+      </div>
+    </div>
+
+    <div id="neg-warning" class="sp-warning" hidden>
+      &#9888; This graph has <strong>negative edge weights</strong>. Dijkstra assumes a settled node's distance is final,
+      which is no longer true here &mdash; run it, then switch to Bellman-Ford and compare the answers.
+    </div>
+
+    <div class="sp-layout">
+      <!-- Left: graph + narration -->
+      <div class="sp-main">
+        <div class="canvas-area sp-canvas">
+          <svg id="sp-svg" viewBox="0 0 700 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Weighted directed graph"></svg>
+        </div>
+
+        <div class="sp-legend">
+          <span><i class="dot" style="border-color:#f59e0b"></i> Current node</span>
+          <span><i style="background:#f59e0b"></i> Edge being checked</span>
+          <span><i style="background:#10b981"></i> Relaxed edge / final path</span>
+          <span><i style="background:#38bdf8"></i> Best path so far (prev[])</span>
+          <span><i class="dot" style="border-color:#10b981"></i> Settled node</span>
+          <span><i style="background:#ef4444"></i> Negative cycle</span>
+        </div>
+
+        <div id="status-box" class="action-banner sp-status">
+          <span id="status-text">Ready</span>
+        </div>
+      </div>
+
+      <!-- Right: data structures + code -->
+      <div class="sp-side">
+        <div class="sp-card">
+          <h3>Distance table</h3>
+          <table class="sp-table">
+            <thead><tr><th>Node</th><th>Dist</th><th>Prev</th><th>Status</th></tr></thead>
+            <tbody id="dist-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div class="complexity-panel">
+      <div class="complexity-card sp-result-path">
+        <span>Shortest Path</span>
+        <strong id="path-output" style="color: var(--accent);">&mdash;</strong>
+      </div>
+      <div class="complexity-card sp-result-cost">
+        <span>Total Cost</span>
+        <strong id="cost-output">&mdash;</strong>
+      </div>
+    </div>
+
+    <!-- Big-O Metrics Panel -->
+    <div class="complexity-panel">
+      <div class="complexity-card">
+        <span>Algorithm</span>
+        <strong id="algo-name">Dijkstra</strong>
+      </div>
+      <div class="complexity-card">
+        <span>Time Complexity</span>
+        <strong id="time-comp">O((V + E) log V)</strong>
+      </div>
+      <div class="complexity-card">
+        <span>Space Complexity</span>
+        <strong id="space-comp">O(V)</strong>
+      </div>
+      <div class="complexity-card">
+        <span>Negative Weights</span>
+        <strong id="neg-support">Not supported</strong>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/visualization/shortestPathVisualizer.js"></script>
+  <script src="../js/theme.js"></script>
+</body>
+</html>

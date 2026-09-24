@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="DSA Playground">
+  <defs>
+    <linearGradient id="dsaGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <!-- Full-bleed badge background (looks solid when clipped to a circle) -->
+  <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#dsaGrad)"/>
+  <!-- Data-structure / tree motif -->
+  <g stroke="#ffffff" stroke-width="4" stroke-linecap="round">
+    <line x1="32" y1="20" x2="18" y2="44"/>
+    <line x1="32" y1="20" x2="46" y2="44"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="32" cy="20" r="7"/>
+    <circle cx="18" cy="45" r="7"/>
+    <circle cx="46" cy="45" r="7"/>
+  </g>
+  <g fill="url(#dsaGrad)">
+    <circle cx="32" cy="20" r="2.6"/>
+    <circle cx="18" cy="45" r="2.6"/>
+    <circle cx="46" cy="45" r="2.6"/>
+  </g>
+</svg>
